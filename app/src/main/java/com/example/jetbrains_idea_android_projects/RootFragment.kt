@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.jetbrains_idea_android_projects.databinding.FragmentRootBinding
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.subscribers.DisposableSubscriber
 
 class RootFragment : Fragment() {
-    private var _binding: FragmentRootBinding? = null
-    private val binding
-        get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,23 +21,30 @@ class RootFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentRootBinding.inflate(inflater, container, false).run {
-        _binding = this
         button.setOnClickListener {
-            Observable.fromArray("Кошачья правда", "Игривые кошки", "Кот лета")
-                .subscribe { s -> Log.i("Rx", "onNext: $s") }
+
+            val  flowable = Flowable.fromArray("Кошачья правда", "Игривые кошки", "Кот лета")
+
+            val subscriber = object : DisposableSubscriber<String>() {
+                override fun onNext(s: String) {
+                    Log.i("Rx", "onNext: $s")
+                    if (s.equals("Игривые кошки", true)) {
+                        dispose()
+                        Log.i("Rx", "Disposed")
+                    }
+                }
+
+                override fun onComplete() {
+                    Log.i("Rx", "onComplete")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.i("Rx", "onError: $e")
+                }
+
+            }
+            flowable.subscribe(subscriber)
         }
         root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = RootFragment().apply {
-            arguments = Bundle()
-        }
     }
 }

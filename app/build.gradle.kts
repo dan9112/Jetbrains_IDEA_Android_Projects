@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.jetbrains_idea_android_projects"
         minSdk = 21
         targetSdk = 32
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 6
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
