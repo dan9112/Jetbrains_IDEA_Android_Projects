@@ -14,8 +14,8 @@ android {
         applicationId = "com.example.jetbrains_idea_android_projects"
         minSdk = 21
         targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,4 +52,6 @@ dependencies {
 
     testImplementation("com.google.truth:truth:1.1.3")
     androidTestImplementation("com.google.truth:truth:1.1.3")
+
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
 }
