@@ -5,6 +5,7 @@ import org.gradle.api.JavaVersion.VERSION_11
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -36,9 +37,8 @@ android {
     kotlinOptions {
         jvmTarget = VERSION_11.toString()
     }
-
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -46,12 +46,23 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    val navVersion = "2.5.2"
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    androidTestImplementation("androidx.navigation:navigation-testing:$navVersion")
+
+    val fragmentVersion = "1.5.3"
+    implementation ("androidx.fragment:fragment-ktx:$fragmentVersion")
+    debugImplementation ("androidx.fragment:fragment-testing:$fragmentVersion")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    testImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
+    val truthVersion = "1.1.3"
+    testImplementation("com.google.truth:truth:$truthVersion")
+    androidTestImplementation("com.google.truth:truth:$truthVersion")
 
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
 }
