@@ -15,8 +15,8 @@ android {
         applicationId = "com.example.jetbrains_idea_android_projects"
         minSdk = 21
         targetSdk = 32
-        versionCode = 6
-        versionName = "1.5"
+        versionCode = 7
+        versionName = "1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,4 +65,6 @@ dependencies {
     androidTestImplementation("com.google.truth:truth:$truthVersion")
 
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
+
+    implementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
 }
