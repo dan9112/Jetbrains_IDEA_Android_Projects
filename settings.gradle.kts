@@ -15,4 +15,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Jetbrains IDEA Android Projects"
-include(":app")
+include(":rx_first_steps")
