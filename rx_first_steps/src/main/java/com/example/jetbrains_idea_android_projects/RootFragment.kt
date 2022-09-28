@@ -9,18 +9,14 @@ import com.example.jetbrains_idea_android_projects.databinding.FragmentRootBindi
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableObserver
-import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.Subject
 import java.util.concurrent.TimeUnit
 
-class RootFragment : Fragment() {
-    private var subject: PublishSubject<String>? = null
-    private var disposables = CompositeDisposable()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
+class RootFragment : Fragment() {
+    private var subject: Subject<String>? = null
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +37,17 @@ class RootFragment : Fragment() {
 
             if (subject?.hasComplete() != false) {
                 disposables.clear()
-                subject = PublishSubject.create()
+                subject = BehaviorSubject.create()
             }
             dataObservable.zipWith(intervalObservable) { source, _ ->
                 Log.i("Rx", "Observable value - $source")
                 source
             }.subscribe(object : DisposableObserver<String>() {
                 override fun onNext(t: String) = subject!!.onNext("$this - $t")
-                override fun onError(e: Throwable) = subject!!.onError(e)
+                override fun onError(e: Throwable) {
+                    subject!!.onError(e)
+                    subject = null
+                }
                 override fun onComplete() = subject!!.onComplete()
             }.also {
                 disposables.add(it)
@@ -77,7 +76,7 @@ class RootFragment : Fragment() {
                 }
             }.also {
                 disposables.add(it)
-            }) ?: Log.i("Rx", "")
+            }) ?: Log.i("Rx", "There is no active observable!")
         }
         disposeObservable.setOnClickListener {
             if (disposables.size() == 0) {
